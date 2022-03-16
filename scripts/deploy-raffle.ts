@@ -3,8 +3,9 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import { ethers, network, run } from "hardhat";
+import {network, run } from "hardhat";
 import * as CHAINLINK_ADDRS from '../utils/chainlink-constants.json'
+const hre = require("hardhat");
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -28,20 +29,20 @@ async function main() {
     keyHash = chainlinkInfo.KeyHash;
     feeUnparsed = chainlinkInfo.FeeUnparsed;
   } else {
-    linkToken = ethers.constants.AddressZero;
-    vrfCoordinator = ethers.constants.AddressZero;
-    keyHash = ethers.constants.HashZero;
-    feeUnparsed = ethers.constants.Zero;
+    linkToken = hre.ethers.constants.AddressZero;
+    vrfCoordinator = hre.ethers.constants.AddressZero;
+    keyHash = hre.ethers.constants.HashZero;
+    feeUnparsed = hre.ethers.constants.Zero;
   }
   console.log("Deploying with args: ", linkToken, vrfCoordinator, keyHash, feeUnparsed)
   //console.log('for this network', CHAINLINK_ADDRS[network.config.chainId!.toString()])
   // We get the contract to deploy
-  const RaffleFactory = await ethers.getContractFactory("RaffleFactory");
+  const RaffleFactory = await hre.ethers.getContractFactory("RaffleFactory");
   const raffleFactory = await RaffleFactory.deploy(
     vrfCoordinator, 
     keyHash, 
     linkToken, 
-    ethers.utils.parseEther(feeUnparsed as string)
+    hre.ethers.utils.parseEther(feeUnparsed as string)
   );
 
   console.log("RaffleFactory deployed to address: ", raffleFactory.address);
@@ -58,7 +59,7 @@ async function main() {
         vrfCoordinator,
         keyHash,
         linkToken,
-        ethers.utils.parseEther(feeUnparsed as string)
+        hre.ethers.utils.parseEther(feeUnparsed as string)
       ]
     });
     await run("verify:verify", {
@@ -67,7 +68,7 @@ async function main() {
         vrfCoordinator,
         keyHash,
         linkToken,
-        ethers.utils.parseEther(feeUnparsed as string)
+        hre.ethers.utils.parseEther(feeUnparsed as string)
       ]
     })
   }

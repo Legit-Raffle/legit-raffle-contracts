@@ -6,6 +6,7 @@
 import {network, run } from "hardhat";
 import * as CHAINLINK_ADDRS from '../utils/chainlink-constants.json'
 const hre = require("hardhat");
+require('dotenv').config();
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -35,6 +36,7 @@ async function main() {
     feeUnparsed = hre.ethers.constants.Zero;
   }
   console.log("Deploying with args: ", linkToken, vrfCoordinator, keyHash, feeUnparsed)
+  console.log(process.env.NODE_API_URL)
   //console.log('for this network', CHAINLINK_ADDRS[network.config.chainId!.toString()])
   // We get the contract to deploy
   const RaffleFactory = await hre.ethers.getContractFactory("RaffleFactory");

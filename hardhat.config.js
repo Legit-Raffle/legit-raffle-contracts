@@ -1,5 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
-require("@nomiclabs/hardhat-etherscan")
+require("@nomiclabs/hardhat-etherscan");
+require('dotenv').config();
 // require("hardhat-gas-reporter")
 
 // import "@typechain/hardhat";

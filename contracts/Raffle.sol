@@ -12,6 +12,21 @@ contract Raffle is
     ERC721Holder, // bc it holds an NFT for raffle
     Initializable // bc it's created by a proxy
 {
+
+    event Claimed(
+        address _winner,
+        uint256 _winnerIdx,
+        address token,
+        uint256 id
+    );
+    event WinnerDrawn(
+        uint256 winner
+    ); 
+    event Finalized(
+        bytes32 _list, 
+        uint256 _listSize    
+    );
+
     // FLOW:
     // 1. Create with NFT
     // 2. [...people enter the raffle off-chain or outside of this contract...]
@@ -57,10 +72,14 @@ contract Raffle is
         require(msg.sender == admin);
         list = _list;
         listSize = _listSize;
+        emit Finalized(
+            list,
+            listSize
+        );
     }
 
     uint256 winner; // the list index of the winner
-    bool drawn;     // true iif random number has been returned
+    bool drawn;     // true if random number has been returned
     // use chainlink to draw a random number
     function draw() external returns (bytes32) {
         require(msg.sender == admin);
@@ -76,6 +95,7 @@ contract Raffle is
     ) internal override {
         winner = randomness % listSize;
         drawn = true;
+        emit WinnerDrawn(winner);
     }
 
 
@@ -102,6 +122,12 @@ contract Raffle is
 
         // transfer the NFT to the winner
         IERC721(token).safeTransferFrom(address(this), _winner, id);
+        emit Claimed(
+            _winner,
+            _winnerIdx,
+            token,
+            id
+        );
     }
 
     // frontend will need an analogous method to format calls to `claim`

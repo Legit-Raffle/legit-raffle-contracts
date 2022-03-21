@@ -14,7 +14,7 @@ export function merkleLeaf(entrant, index) {
 
 // input: address[]. eg [0xa, 0xb, 0xc...] 
 export function merkleRoot(addrArray) {
-    const entries = addryArray.map((elem, idx) => [elem, idx]);
+    const entries = addrArray.map((elem, idx) => [elem, idx]);
     
     const leaves = entries.map(elem => merkleLeaf(elem[0], elem[1]));
 

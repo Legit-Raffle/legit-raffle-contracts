@@ -33,7 +33,7 @@ async function main() {
     linkToken = hre.ethers.constants.AddressZero;
     vrfCoordinator = hre.ethers.constants.AddressZero;
     keyHash = hre.ethers.constants.HashZero;
-    feeUnparsed = hre.ethers.constants.Zero;
+    feeUnparsed = "0";
   }
   console.log("Deploying with args: ", linkToken, vrfCoordinator, keyHash, feeUnparsed)
   console.log(process.env.NODE_API_URL)

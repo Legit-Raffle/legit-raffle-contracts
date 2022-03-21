@@ -34,9 +34,9 @@ contract Raffle is
     // 4. admin gets a random number from [0, listSize)
     // 5. anyone can `claim` the NFT to the raffle winner
 
-    address admin;
-    address token; // nft contract
-    uint256 id;    // nft contract's tokenId
+    address public admin;
+    address public token; // nft contract
+    uint256 public id;    // nft contract's tokenId
 
 
     // these variables & constructor are chainlink VRF boilerplate
@@ -78,8 +78,8 @@ contract Raffle is
         );
     }
 
-    uint256 winner; // the list index of the winner
-    bool drawn;     // true if random number has been returned
+    uint256 public winner; // the list index of the winner
+    bool public drawn;     // true if random number has been returned
     // use chainlink to draw a random number
     function draw() external returns (bytes32) {
         require(msg.sender == admin);

@@ -3,14 +3,26 @@ pragma solidity ^0.8.0;
 
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
 import {Raffle} from "./Raffle.sol";
 
 contract RaffleFactory {
-    uint256 public vaultCount;
-    mapping (uint256 => address) public vaults;
+    using Counters for Counters.Counter;
+    Counters.Counter private _raffleCounter;
+
+    event NewRaffle(string Name, address raffleAddress, address raffleOwner);
+
+    struct Raffles{
+        Counters.Counter Id;
+        string Name;
+        address raffleAddress;
+        address raffleOwner;
+    }
+
+    Raffles[] public raffles;
+    mapping (uint => Raffles) myRaffles;
 
     address public raffleLogic;
-
 
     constructor(
         address _vrfCoordinator,
@@ -27,8 +39,7 @@ contract RaffleFactory {
     }
 
     // @note this address must be approved to move `nft`
-    function createRaffle(address _token, uint256 _id) external
-        returns (uint256 _vaultId)
+    function createRaffle(address _token, uint256 _id, string memory _name) external
     {
         address raffle = Clones.clone(raffleLogic);
 
@@ -37,10 +48,24 @@ contract RaffleFactory {
         // or if `msg.sender` doesn't own `token id`
         IERC721(_token).safeTransferFrom(msg.sender, raffle, _id);
 
-        Raffle(raffle).initWithNFT(msg.sender, _token, _id);
+        Raffle(raffle).initWithNFT(msg.sender, _token, _id, _name);
 
-        _vaultId = vaultCount++;
-        vaults[_vaultId] = raffle;
-        // TODO emit some event
+        _raffleCounter.increment();
+
+        raffles.push(Raffles(_raffleCounter, _name, raffle, msg.sender));
+
+        emit NewRaffle(_name, raffle, msg.sender);
+    }
+
+    // @note this function sets the myRaffles mapping to the raffles associated with the msg.sender
+    function setMyRaffles() external{
+        uint raffleLength = raffles.length;
+        uint counter = 0;
+        for(uint i=0; i<raffleLength; i++){
+            if(raffles[i].raffleOwner == msg.sender){
+                myRaffles[counter] = (raffles[i]);
+                counter++;
+            }
+        }
     }
 }

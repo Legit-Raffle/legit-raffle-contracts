@@ -24,7 +24,6 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
     "createRaffle(address,uint256,string)": FunctionFragment;
     "raffleLogic()": FunctionFragment;
     "raffles(uint256)": FunctionFragment;
-    "setMyRaffles()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -39,10 +38,6 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
     functionFragment: "raffles",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "setMyRaffles",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "createRaffle",
@@ -53,10 +48,6 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "raffles", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setMyRaffles",
-    data: BytesLike
-  ): Result;
 
   events: {
     "NewRaffle(string,address,address)": EventFragment;
@@ -137,10 +128,6 @@ export class RaffleFactory extends BaseContract {
         raffleOwner: string;
       }
     >;
-
-    setMyRaffles(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
   };
 
   createRaffle(
@@ -164,10 +151,6 @@ export class RaffleFactory extends BaseContract {
     }
   >;
 
-  setMyRaffles(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     createRaffle(
       _token: string,
@@ -189,8 +172,6 @@ export class RaffleFactory extends BaseContract {
         raffleOwner: string;
       }
     >;
-
-    setMyRaffles(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -224,10 +205,6 @@ export class RaffleFactory extends BaseContract {
     raffleLogic(overrides?: CallOverrides): Promise<BigNumber>;
 
     raffles(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    setMyRaffles(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -243,10 +220,6 @@ export class RaffleFactory extends BaseContract {
     raffles(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    setMyRaffles(
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

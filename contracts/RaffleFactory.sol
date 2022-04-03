@@ -20,8 +20,6 @@ contract RaffleFactory {
     }
 
     Raffles[] public raffles;
-    mapping (uint => Raffles) myRaffles;
-
     address public raffleLogic;
 
     constructor(
@@ -55,17 +53,5 @@ contract RaffleFactory {
         raffles.push(Raffles(_raffleCounter, _name, raffle, msg.sender));
 
         emit NewRaffle(_name, raffle, msg.sender);
-    }
-
-    // @note this function sets the myRaffles mapping to the raffles associated with the msg.sender
-    function setMyRaffles() external{
-        uint raffleLength = raffles.length;
-        uint counter = 0;
-        for(uint i=0; i<raffleLength; i++){
-            if(raffles[i].raffleOwner == msg.sender){
-                myRaffles[counter] = (raffles[i]);
-                counter++;
-            }
-        }
     }
 }

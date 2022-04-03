@@ -37,8 +37,6 @@ contract Raffle is
     address public admin;
     address public token; // nft contract
     uint256 public id;    // nft contract's tokenId
-    string public name;
-
 
     // these variables & constructor are chainlink VRF boilerplate
     bytes32 private immutable vrfKeyHash;
@@ -54,11 +52,10 @@ contract Raffle is
     }
 
     // called by RaffleFactory.sol (TODO)
-    function initWithNFT(address _admin, address _token, uint256 _id, string memory _name) external initializer {
+    function initWithNFT(address _admin, address _token, uint256 _id) external initializer {
         admin = _admin;
         token = _token;
         id = _id;
-        name = _name;
         require(
             IERC721(_token).ownerOf(_id) == address(this)
         );

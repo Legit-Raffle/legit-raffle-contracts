@@ -46,7 +46,7 @@ contract RaffleFactory {
         // or if `msg.sender` doesn't own `token id`
         IERC721(_token).safeTransferFrom(msg.sender, raffle, _id);
 
-        Raffle(raffle).initWithNFT(msg.sender, _token, _id, _name);
+        Raffle(raffle).initWithNFT(msg.sender, _token, _id);
 
         _raffleCounter.increment();
 

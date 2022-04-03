@@ -4,8 +4,7 @@ const hre = require("hardhat");
 require('dotenv').config();
 
 describe("RaffleFactory", function () {
-
-  it("Should return all raffles associated with address", async function () {
+  it("Deploy", async function () {
     const owner = await ethers.getSigners();
     let linkToken, vrfCoordinator, keyHash, feeUnparsed;
     linkToken = hre.ethers.constants.AddressZero;
@@ -22,14 +21,13 @@ describe("RaffleFactory", function () {
       hre.ethers.utils.parseEther(feeUnparsed)
     );
     await raffleFactory.deployed();
+  });
 
-    await raffleFactory.createRaffle(0xE0E4986D4547D3c99363e2F21623831036B5202d, 7, "boa7");
-    await raffleFactory.createRaffle(0xE0E4986D4547D3c99363e2F21623831036B5202d, 5, "boa5");
-
-    await raffleFactory.setRaffle();
-
-    await raffleFactory.myRaffles();
-    console.log(raffleFactory.myRaffles());
-   
+  it("Create Raffle", async function(){
+     //Create Raffle
+     await raffleFactory.createRaffle("0xE0E4986D4547D3c99363e2F21623831036B5202d", 7, "boa7");
+     await raffleFactory.createRaffle("0xE0E4986D4547D3c99363e2F21623831036B5202d", 5, "boa5");
+ 
+     console.log(raffleFactory.raffles());
   });
 });

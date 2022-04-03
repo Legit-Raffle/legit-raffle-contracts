@@ -58,7 +58,7 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
 
 export type NewRaffleEvent = TypedEvent<
   [string, string, string] & {
-    Name: string;
+    raffleName: string;
     raffleAddress: string;
     raffleOwner: string;
   }
@@ -111,7 +111,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _name: string,
+      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -123,7 +123,7 @@ export class RaffleFactory extends BaseContract {
     ): Promise<
       [[BigNumber] & { _value: BigNumber }, string, string, string] & {
         Id: [BigNumber] & { _value: BigNumber };
-        Name: string;
+        raffleName: string;
         raffleAddress: string;
         raffleOwner: string;
       }
@@ -133,7 +133,7 @@ export class RaffleFactory extends BaseContract {
   createRaffle(
     _token: string,
     _id: BigNumberish,
-    _name: string,
+    _raffleName: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -145,7 +145,7 @@ export class RaffleFactory extends BaseContract {
   ): Promise<
     [[BigNumber] & { _value: BigNumber }, string, string, string] & {
       Id: [BigNumber] & { _value: BigNumber };
-      Name: string;
+      raffleName: string;
       raffleAddress: string;
       raffleOwner: string;
     }
@@ -155,7 +155,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _name: string,
+      _raffleName: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -167,7 +167,7 @@ export class RaffleFactory extends BaseContract {
     ): Promise<
       [[BigNumber] & { _value: BigNumber }, string, string, string] & {
         Id: [BigNumber] & { _value: BigNumber };
-        Name: string;
+        raffleName: string;
         raffleAddress: string;
         raffleOwner: string;
       }
@@ -176,21 +176,21 @@ export class RaffleFactory extends BaseContract {
 
   filters: {
     "NewRaffle(string,address,address)"(
-      Name?: null,
+      raffleName?: null,
       raffleAddress?: null,
       raffleOwner?: null
     ): TypedEventFilter<
       [string, string, string],
-      { Name: string; raffleAddress: string; raffleOwner: string }
+      { raffleName: string; raffleAddress: string; raffleOwner: string }
     >;
 
     NewRaffle(
-      Name?: null,
+      raffleName?: null,
       raffleAddress?: null,
       raffleOwner?: null
     ): TypedEventFilter<
       [string, string, string],
-      { Name: string; raffleAddress: string; raffleOwner: string }
+      { raffleName: string; raffleAddress: string; raffleOwner: string }
     >;
   };
 
@@ -198,7 +198,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _name: string,
+      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -211,7 +211,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _name: string,
+      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

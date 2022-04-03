@@ -27,12 +27,11 @@ interface RaffleInterface extends ethers.utils.Interface {
     "drawn()": FunctionFragment;
     "finalize(bytes32,uint256)": FunctionFragment;
     "id()": FunctionFragment;
-    "initWithNFT(address,address,uint256,string)": FunctionFragment;
+    "initWithNFT(address,address,uint256)": FunctionFragment;
     "linkFee()": FunctionFragment;
     "list()": FunctionFragment;
     "listSize()": FunctionFragment;
     "merkleLeafForListItem(address,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "rawFulfillRandomness(bytes32,uint256)": FunctionFragment;
     "token()": FunctionFragment;
@@ -53,7 +52,7 @@ interface RaffleInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "id", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initWithNFT",
-    values: [string, string, BigNumberish, string]
+    values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "linkFee", values?: undefined): string;
   encodeFunctionData(functionFragment: "list", values?: undefined): string;
@@ -62,7 +61,6 @@ interface RaffleInterface extends ethers.utils.Interface {
     functionFragment: "merkleLeafForListItem",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onERC721Received",
     values: [string, string, BigNumberish, BytesLike]
@@ -91,7 +89,6 @@ interface RaffleInterface extends ethers.utils.Interface {
     functionFragment: "merkleLeafForListItem",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC721Received",
     data: BytesLike
@@ -200,7 +197,6 @@ export class Raffle extends BaseContract {
       _admin: string,
       _token: string,
       _id: BigNumberish,
-      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -215,8 +211,6 @@ export class Raffle extends BaseContract {
       _index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    name(overrides?: CallOverrides): Promise<[string]>;
 
     onERC721Received(
       arg0: string,
@@ -264,7 +258,6 @@ export class Raffle extends BaseContract {
     _admin: string,
     _token: string,
     _id: BigNumberish,
-    _name: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -279,8 +272,6 @@ export class Raffle extends BaseContract {
     _index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
-
-  name(overrides?: CallOverrides): Promise<string>;
 
   onERC721Received(
     arg0: string,
@@ -326,7 +317,6 @@ export class Raffle extends BaseContract {
       _admin: string,
       _token: string,
       _id: BigNumberish,
-      _name: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -341,8 +331,6 @@ export class Raffle extends BaseContract {
       _index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    name(overrides?: CallOverrides): Promise<string>;
 
     onERC721Received(
       arg0: string,
@@ -437,7 +425,6 @@ export class Raffle extends BaseContract {
       _admin: string,
       _token: string,
       _id: BigNumberish,
-      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -452,8 +439,6 @@ export class Raffle extends BaseContract {
       _index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    name(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC721Received(
       arg0: string,
@@ -502,7 +487,6 @@ export class Raffle extends BaseContract {
       _admin: string,
       _token: string,
       _id: BigNumberish,
-      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -517,8 +501,6 @@ export class Raffle extends BaseContract {
       _index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     onERC721Received(
       arg0: string,

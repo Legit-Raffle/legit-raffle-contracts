@@ -21,13 +21,8 @@ describe("RaffleFactory", function () {
       hre.ethers.utils.parseEther(feeUnparsed)
     );
     await raffleFactory.deployed();
-  });
 
-  it("Create Raffle", async function(){
-     //Create Raffle
-     await raffleFactory.createRaffle("0xE0E4986D4547D3c99363e2F21623831036B5202d", 7, "boa7");
-     await raffleFactory.createRaffle("0xE0E4986D4547D3c99363e2F21623831036B5202d", 5, "boa5");
- 
-     console.log(raffleFactory.raffles());
+    //Create Raffle
+    console.log(raffleFactory.raffles());
   });
 });

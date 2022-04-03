@@ -3,24 +3,14 @@ pragma solidity ^0.8.0;
 
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
 import {Raffle} from "./Raffle.sol";
 
 contract RaffleFactory {
-    using Counters for Counters.Counter;
-    Counters.Counter private _raffleCounter;
+    uint256 public vaultCount;
+    mapping (uint256 => address) public vaults;
 
-    event NewRaffle(string Name, address raffleAddress, address raffleOwner);
-
-    struct Raffles{
-        Counters.Counter Id;
-        string Name;
-        address raffleAddress;
-        address raffleOwner;
-    }
-
-    Raffles[] public raffles;
     address public raffleLogic;
+
 
     constructor(
         address _vrfCoordinator,
@@ -37,7 +27,8 @@ contract RaffleFactory {
     }
 
     // @note this address must be approved to move `nft`
-    function createRaffle(address _token, uint256 _id, string memory _name) external
+    function createRaffle(address _token, uint256 _id) external
+        returns (uint256 _vaultId)
     {
         address raffle = Clones.clone(raffleLogic);
 
@@ -48,10 +39,8 @@ contract RaffleFactory {
 
         Raffle(raffle).initWithNFT(msg.sender, _token, _id);
 
-        _raffleCounter.increment();
-
-        raffles.push(Raffles(_raffleCounter, _name, raffle, msg.sender));
-
-        emit NewRaffle(_name, raffle, msg.sender);
+        _vaultId = vaultCount++;
+        vaults[_vaultId] = raffle;
+        // TODO emit some event
     }
 }

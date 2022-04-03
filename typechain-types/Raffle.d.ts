@@ -21,12 +21,9 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface RaffleInterface extends ethers.utils.Interface {
   functions: {
-    "admin()": FunctionFragment;
     "claim(address,uint256,bytes32[])": FunctionFragment;
     "draw()": FunctionFragment;
-    "drawn()": FunctionFragment;
     "finalize(bytes32,uint256)": FunctionFragment;
-    "id()": FunctionFragment;
     "initWithNFT(address,address,uint256)": FunctionFragment;
     "linkFee()": FunctionFragment;
     "list()": FunctionFragment;
@@ -34,22 +31,17 @@ interface RaffleInterface extends ethers.utils.Interface {
     "merkleLeafForListItem(address,uint256)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "rawFulfillRandomness(bytes32,uint256)": FunctionFragment;
-    "token()": FunctionFragment;
-    "winner()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "claim",
     values: [string, BigNumberish, BytesLike[]]
   ): string;
   encodeFunctionData(functionFragment: "draw", values?: undefined): string;
-  encodeFunctionData(functionFragment: "drawn", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "finalize",
     values: [BytesLike, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "id", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initWithNFT",
     values: [string, string, BigNumberish]
@@ -69,15 +61,10 @@ interface RaffleInterface extends ethers.utils.Interface {
     functionFragment: "rawFulfillRandomness",
     values: [BytesLike, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "token", values?: undefined): string;
-  encodeFunctionData(functionFragment: "winner", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "draw", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "drawn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "finalize", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "id", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "initWithNFT",
     data: BytesLike
@@ -97,34 +84,9 @@ interface RaffleInterface extends ethers.utils.Interface {
     functionFragment: "rawFulfillRandomness",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "winner", data: BytesLike): Result;
 
-  events: {
-    "Claimed(address,uint256,address,uint256)": EventFragment;
-    "Finalized(bytes32,uint256)": EventFragment;
-    "WinnerDrawn(uint256)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Finalized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "WinnerDrawn"): EventFragment;
+  events: {};
 }
-
-export type ClaimedEvent = TypedEvent<
-  [string, BigNumber, string, BigNumber] & {
-    _winner: string;
-    _winnerIdx: BigNumber;
-    token: string;
-    id: BigNumber;
-  }
->;
-
-export type FinalizedEvent = TypedEvent<
-  [string, BigNumber] & { _list: string; _listSize: BigNumber }
->;
-
-export type WinnerDrawnEvent = TypedEvent<[BigNumber] & { winner: BigNumber }>;
 
 export class Raffle extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -170,8 +132,6 @@ export class Raffle extends BaseContract {
   interface: RaffleInterface;
 
   functions: {
-    admin(overrides?: CallOverrides): Promise<[string]>;
-
     claim(
       _winner: string,
       _winnerIdx: BigNumberish,
@@ -183,15 +143,11 @@ export class Raffle extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    drawn(overrides?: CallOverrides): Promise<[boolean]>;
-
     finalize(
       _list: BytesLike,
       _listSize: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    id(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initWithNFT(
       _admin: string,
@@ -225,13 +181,7 @@ export class Raffle extends BaseContract {
       randomness: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    token(overrides?: CallOverrides): Promise<[string]>;
-
-    winner(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
-
-  admin(overrides?: CallOverrides): Promise<string>;
 
   claim(
     _winner: string,
@@ -244,15 +194,11 @@ export class Raffle extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  drawn(overrides?: CallOverrides): Promise<boolean>;
-
   finalize(
     _list: BytesLike,
     _listSize: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  id(overrides?: CallOverrides): Promise<BigNumber>;
 
   initWithNFT(
     _admin: string,
@@ -287,13 +233,7 @@ export class Raffle extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  token(overrides?: CallOverrides): Promise<string>;
-
-  winner(overrides?: CallOverrides): Promise<BigNumber>;
-
   callStatic: {
-    admin(overrides?: CallOverrides): Promise<string>;
-
     claim(
       _winner: string,
       _winnerIdx: BigNumberish,
@@ -303,15 +243,11 @@ export class Raffle extends BaseContract {
 
     draw(overrides?: CallOverrides): Promise<string>;
 
-    drawn(overrides?: CallOverrides): Promise<boolean>;
-
     finalize(
       _list: BytesLike,
       _listSize: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    id(overrides?: CallOverrides): Promise<BigNumber>;
 
     initWithNFT(
       _admin: string,
@@ -345,61 +281,11 @@ export class Raffle extends BaseContract {
       randomness: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    token(overrides?: CallOverrides): Promise<string>;
-
-    winner(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {
-    "Claimed(address,uint256,address,uint256)"(
-      _winner?: null,
-      _winnerIdx?: null,
-      token?: null,
-      id?: null
-    ): TypedEventFilter<
-      [string, BigNumber, string, BigNumber],
-      { _winner: string; _winnerIdx: BigNumber; token: string; id: BigNumber }
-    >;
-
-    Claimed(
-      _winner?: null,
-      _winnerIdx?: null,
-      token?: null,
-      id?: null
-    ): TypedEventFilter<
-      [string, BigNumber, string, BigNumber],
-      { _winner: string; _winnerIdx: BigNumber; token: string; id: BigNumber }
-    >;
-
-    "Finalized(bytes32,uint256)"(
-      _list?: null,
-      _listSize?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { _list: string; _listSize: BigNumber }
-    >;
-
-    Finalized(
-      _list?: null,
-      _listSize?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { _list: string; _listSize: BigNumber }
-    >;
-
-    "WinnerDrawn(uint256)"(
-      winner?: null
-    ): TypedEventFilter<[BigNumber], { winner: BigNumber }>;
-
-    WinnerDrawn(
-      winner?: null
-    ): TypedEventFilter<[BigNumber], { winner: BigNumber }>;
-  };
+  filters: {};
 
   estimateGas: {
-    admin(overrides?: CallOverrides): Promise<BigNumber>;
-
     claim(
       _winner: string,
       _winnerIdx: BigNumberish,
@@ -411,15 +297,11 @@ export class Raffle extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    drawn(overrides?: CallOverrides): Promise<BigNumber>;
-
     finalize(
       _list: BytesLike,
       _listSize: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    id(overrides?: CallOverrides): Promise<BigNumber>;
 
     initWithNFT(
       _admin: string,
@@ -453,15 +335,9 @@ export class Raffle extends BaseContract {
       randomness: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    token(overrides?: CallOverrides): Promise<BigNumber>;
-
-    winner(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    admin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     claim(
       _winner: string,
       _winnerIdx: BigNumberish,
@@ -473,15 +349,11 @@ export class Raffle extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    drawn(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     finalize(
       _list: BytesLike,
       _listSize: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initWithNFT(
       _admin: string,
@@ -515,9 +387,5 @@ export class Raffle extends BaseContract {
       randomness: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    winner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

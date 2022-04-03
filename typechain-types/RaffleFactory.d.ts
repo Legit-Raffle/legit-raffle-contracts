@@ -21,21 +21,26 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface RaffleFactoryInterface extends ethers.utils.Interface {
   functions: {
-    "createRaffle(address,uint256,string)": FunctionFragment;
+    "createRaffle(address,uint256)": FunctionFragment;
     "raffleLogic()": FunctionFragment;
-    "raffles(uint256)": FunctionFragment;
+    "vaultCount()": FunctionFragment;
+    "vaults(uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "createRaffle",
-    values: [string, BigNumberish, string]
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "raffleLogic",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "raffles",
+    functionFragment: "vaultCount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "vaults",
     values: [BigNumberish]
   ): string;
 
@@ -47,22 +52,11 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
     functionFragment: "raffleLogic",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "raffles", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "vaultCount", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "vaults", data: BytesLike): Result;
 
-  events: {
-    "NewRaffle(string,address,address)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "NewRaffle"): EventFragment;
+  events: {};
 }
-
-export type NewRaffleEvent = TypedEvent<
-  [string, string, string] & {
-    raffleName: string;
-    raffleAddress: string;
-    raffleOwner: string;
-  }
->;
 
 export class RaffleFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -111,113 +105,70 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     raffleLogic(overrides?: CallOverrides): Promise<[string]>;
 
-    raffles(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [[BigNumber] & { _value: BigNumber }, string, string, string] & {
-        Id: [BigNumber] & { _value: BigNumber };
-        raffleName: string;
-        raffleAddress: string;
-        raffleOwner: string;
-      }
-    >;
+    vaultCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
   };
 
   createRaffle(
     _token: string,
     _id: BigNumberish,
-    _raffleName: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   raffleLogic(overrides?: CallOverrides): Promise<string>;
 
-  raffles(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [[BigNumber] & { _value: BigNumber }, string, string, string] & {
-      Id: [BigNumber] & { _value: BigNumber };
-      raffleName: string;
-      raffleAddress: string;
-      raffleOwner: string;
-    }
-  >;
+  vaultCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _raffleName: string,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     raffleLogic(overrides?: CallOverrides): Promise<string>;
 
-    raffles(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [[BigNumber] & { _value: BigNumber }, string, string, string] & {
-        Id: [BigNumber] & { _value: BigNumber };
-        raffleName: string;
-        raffleAddress: string;
-        raffleOwner: string;
-      }
-    >;
+    vaultCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
   };
 
-  filters: {
-    "NewRaffle(string,address,address)"(
-      raffleName?: null,
-      raffleAddress?: null,
-      raffleOwner?: null
-    ): TypedEventFilter<
-      [string, string, string],
-      { raffleName: string; raffleAddress: string; raffleOwner: string }
-    >;
-
-    NewRaffle(
-      raffleName?: null,
-      raffleAddress?: null,
-      raffleOwner?: null
-    ): TypedEventFilter<
-      [string, string, string],
-      { raffleName: string; raffleAddress: string; raffleOwner: string }
-    >;
-  };
+  filters: {};
 
   estimateGas: {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     raffleLogic(overrides?: CallOverrides): Promise<BigNumber>;
 
-    raffles(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    vaultCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     createRaffle(
       _token: string,
       _id: BigNumberish,
-      _raffleName: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     raffleLogic(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    raffles(
+    vaultCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    vaults(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

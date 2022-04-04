@@ -19,10 +19,10 @@ contract Raffle is
     // 4. admin gets a random number from [0, listSize)
     // 5. anyone can `claim` the NFT to the raffle winner
 
-    address admin;
-    address token; // nft contract
-    uint256 id;    // nft contract's tokenId
-
+    address public admin;
+    address public token; // nft contract
+    uint256 public id;    // nft contract's tokenId
+    string public name;
 
     // these variables & constructor are chainlink VRF boilerplate
     bytes32 private immutable vrfKeyHash;
@@ -38,10 +38,11 @@ contract Raffle is
     }
 
     // called by RaffleFactory.sol (TODO)
-    function initWithNFT(address _admin, address _token, uint256 _id) external initializer {
+    function initWithNFT(address _admin, address _token, uint256 _id, string memory _name) external initializer {
         admin = _admin;
         token = _token;
         id = _id;
+        name = _name;
         require(
             IERC721(_token).ownerOf(_id) == address(this)
         );
@@ -59,8 +60,8 @@ contract Raffle is
         listSize = _listSize;
     }
 
-    uint256 winner; // the list index of the winner
-    bool drawn;     // true iif random number has been returned
+    uint256 public winner; // the list index of the winner
+    bool public drawn;     // true iif random number has been returned
     // use chainlink to draw a random number
     function draw() external returns (bytes32) {
         require(msg.sender == admin);

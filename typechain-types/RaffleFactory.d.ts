@@ -21,7 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface RaffleFactoryInterface extends ethers.utils.Interface {
   functions: {
-    "createRaffle(address,uint256)": FunctionFragment;
+    "createRaffle(address,uint256,string)": FunctionFragment;
     "raffleLogic()": FunctionFragment;
     "vaultCount()": FunctionFragment;
     "vaults(uint256)": FunctionFragment;
@@ -29,7 +29,7 @@ interface RaffleFactoryInterface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "createRaffle",
-    values: [string, BigNumberish]
+    values: [string, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "raffleLogic",
@@ -105,6 +105,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -118,6 +119,7 @@ export class RaffleFactory extends BaseContract {
   createRaffle(
     _token: string,
     _id: BigNumberish,
+    _name: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -131,6 +133,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
+      _name: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -147,6 +150,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -161,6 +165,7 @@ export class RaffleFactory extends BaseContract {
     createRaffle(
       _token: string,
       _id: BigNumberish,
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

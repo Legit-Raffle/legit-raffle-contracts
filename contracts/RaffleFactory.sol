@@ -27,7 +27,7 @@ contract RaffleFactory {
     }
 
     // @note this address must be approved to move `nft`
-    function createRaffle(address _token, uint256 _id) external
+    function createRaffle(address _token, uint256 _id, string memory _name) external
         returns (uint256 _vaultId)
     {
         address raffle = Clones.clone(raffleLogic);
@@ -37,7 +37,7 @@ contract RaffleFactory {
         // or if `msg.sender` doesn't own `token id`
         IERC721(_token).safeTransferFrom(msg.sender, raffle, _id);
 
-        Raffle(raffle).initWithNFT(msg.sender, _token, _id);
+        Raffle(raffle).initWithNFT(msg.sender, _token, _id, _name);
 
         _vaultId = vaultCount++;
         vaults[_vaultId] = raffle;
